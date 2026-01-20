@@ -1,0 +1,43 @@
+def belge_menusu():
+    while True:
+        print("\n--- Belgeler Menüsü ---")
+        print("1- Belge Ekle")
+        print("2- Belgeleri Listele")
+        print("3- Belge Sil")
+        print("4- Geri Dön")
+
+        secim = input("Seçiminiz: ")
+
+        if secim == "1":
+            title = input("Belge Başlığı: ")
+            owner = input("Belge Sahibi: ")
+            description = input("Açıklama: ")
+
+            cursor.execute(
+                "INSERT INTO documents (title, owner, description) VALUES (?, ?, ?)",
+                (title, owner, description)
+            )
+            conn.commit()
+            print("Belge eklendi.")
+
+        elif secim == "2":
+            cursor.execute("SELECT * FROM documents")
+            belgeler = cursor.fetchall()
+
+            if not belgeler:
+                print("Kayıtlı belge yok.")
+            else:
+                for b in belgeler:
+                    print(b)
+
+        elif secim == "3":
+            bid = input("Silinecek belge ID: ")
+            cursor.execute("DELETE FROM documents WHERE id = ?", (bid,))
+            conn.commit()
+            print("Belge silindi.")
+
+        elif secim == "4":
+            break
+
+        else:
+            print("Geçersiz seçim.")
